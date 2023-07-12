@@ -71,7 +71,7 @@ class _AddDataState extends State<AddData> {
                 TextFormField(
                   controller: controllerGender,
                   decoration: InputDecoration(
-                    hintText: "Masukkan Jenis Kelamin",
+                    hintText: "Masukkan Jenis Kelamin (L/P)",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18)),
                   ),
