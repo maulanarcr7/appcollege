@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:appcollege/addData.dart';
+import 'package:appcollege/AddData.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,7 +12,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List _data = [];
-  bool _isloading = true;
 
   Future _getdata() async {
     try {
@@ -22,7 +21,6 @@ class _HomeState extends State<Home> {
         final data = jsonDecode(response.body);
         setState(() {
           _data = data;
-          _isloading = false;
         });
       }
     } catch (e) {
@@ -41,30 +39,26 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home"),
+        title: const Text("Home"),
       ),
-      body: _isloading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: _data.length,
-              itemBuilder: ((context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(_data[index]['name']),
-                    subtitle: Text(_data[index]['nim']),
-                  ),
-                );
-              })),
+      body: ListView.builder(
+          itemCount: _data.length,
+          itemBuilder: ((context, index) {
+            return Card(
+              child: ListTile(
+                title: Text(_data[index]['name']),
+                subtitle: Text(_data[index]['nim']),
+              ),
+            );
+          })),
       floatingActionButton: FloatingActionButton(
-        child: Text(
+        child: const Text(
           "+",
           style: TextStyle(fontSize: 18),
         ),
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => addData())));
+          Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => const AddData())));
         },
       ),
     );

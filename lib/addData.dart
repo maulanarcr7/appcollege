@@ -1,23 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class addData extends StatefulWidget {
-  const addData({super.key});
+class AddData extends StatefulWidget {
+  const AddData({super.key});
 
   @override
-  State<addData> createState() => _addDataState();
+  State<AddData> createState() => _AddDataState();
 }
 
-class _addDataState extends State<addData> {
+class _AddDataState extends State<AddData> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController nim = TextEditingController();
-  TextEditingController name = TextEditingController();
-  TextEditingController gender = TextEditingController();
-  TextEditingController phone_number = TextEditingController();
+  final controllerName = TextEditingController();
+  final controllerNim = TextEditingController();
+  final controllerGender = TextEditingController();
+  final controllerPhoneNumber = TextEditingController();
 
   _saveData() {}
 
   @override
   Widget build(BuildContext context) {
+    Future createUser(User user) async {
+      final docUser = FirebaseFirestore.instance.collection('data_mhs').doc();
+      user.id = docUser.id;
+
+      final json = user.toJson();
+      await docUser.set(json);
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text("Add Data Mahasiswa")),
       body: Form(
@@ -27,23 +36,24 @@ class _addDataState extends State<addData> {
             child: Column(
               children: [
                 TextFormField(
-                  controller: nim,
+                  controller: controllerNim,
                   decoration: InputDecoration(
                     hintText: "Masukkan NIM",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18)),
                   ),
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "NIM Harus Diisi!";
                     }
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
-                  controller: name,
+                  controller: controllerName,
                   decoration: InputDecoration(
                     hintText: "Masukkan Nama Lengkap",
                     border: OutlineInputBorder(
@@ -55,11 +65,11 @@ class _addDataState extends State<addData> {
                     }
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
-                  controller: gender,
+                  controller: controllerGender,
                   decoration: InputDecoration(
                     hintText: "Masukkan Jenis Kelamin",
                     border: OutlineInputBorder(
@@ -71,23 +81,24 @@ class _addDataState extends State<addData> {
                     }
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
-                  controller: phone_number,
+                  controller: controllerPhoneNumber,
                   decoration: InputDecoration(
                     hintText: "Masukkan Nomor Telepon",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18)),
                   ),
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Nomor Telepon Harus Diisi!";
                     }
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 ElevatedButton(
@@ -96,7 +107,14 @@ class _addDataState extends State<addData> {
                           borderRadius: BorderRadius.circular(15))),
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      _saveData();
+                      final user = User(
+                        gender: controllerGender.text,
+                        name: controllerName.text,
+                        nim: controllerNim.text,
+                        phone_number: controllerPhoneNumber.text,
+                      );
+                      createUser(user);
+                      Navigator.pop(context);
                     }
                   },
                   child: Text("Save"),
@@ -106,4 +124,28 @@ class _addDataState extends State<addData> {
           )),
     );
   }
+}
+
+class User {
+  String id;
+  final String name;
+  final String? nim;
+  final String gender;
+  final String? phone_number;
+
+  User({
+    this.id = '',
+    required this.name,
+    required this.nim,
+    required this.gender,
+    required this.phone_number,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'gender': gender,
+        'name': name,
+        'nim': nim,
+        'phone_number': phone_number,
+      };
 }

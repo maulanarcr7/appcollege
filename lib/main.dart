@@ -1,7 +1,13 @@
-import 'package:appcollege/home.dart';
+import 'package:appcollege/about.dart';
+import 'package:appcollege/AddData.dart';
+import 'package:appcollege/ReadData.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -13,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'College App',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,10 +30,16 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Home(),
+      initialRoute: '/main',
+      routes: {
+        '/about': (context) => AboutMe(),
+        '/addData': (context) => const AddData(),
+        '/readData': (context) => const ReadData(),
+      },
+      home: AboutMe(),
     );
   }
 }
