@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class AddData extends StatefulWidget {
-  const AddData({super.key});
+class UpdateData extends StatefulWidget {
+  const UpdateData({super.key});
 
   @override
-  State<AddData> createState() => _AddDataState();
+  State<UpdateData> createState() => _UpdateDataState();
 }
 
-class _AddDataState extends State<AddData> {
+class _UpdateDataState extends State<UpdateData> {
   final formKey = GlobalKey<FormState>();
   final controllerName = TextEditingController();
   final controllerNim = TextEditingController();
@@ -26,7 +26,7 @@ class _AddDataState extends State<AddData> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text("Add Data Mahasiswa")),
+      appBar: AppBar(title: Text("Edit Data Mahasiswa")),
       body: Form(
           key: formKey,
           child: Container(
@@ -147,3 +147,5 @@ class User {
         'phone_number': phone_number,
       };
 }
+
+updateRecord(User user) async {}

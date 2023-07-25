@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'model/user.dart';
 
 class ReadData extends StatefulWidget {
@@ -50,9 +51,17 @@ class _ReadDataState extends State<ReadData> {
     );
   }
 
+  // static const menuItems = <String>["Edit", "Delete"];
+
   Widget buildUser(User user) => ListTile(
         leading: CircleAvatar(child: Text('${user.gender}')),
         title: Text(user.name),
         subtitle: Text(user.nim.toString()),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: ((context) => DetailPage())),
+          );
+        },
       );
 }

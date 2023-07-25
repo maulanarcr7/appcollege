@@ -1,4 +1,6 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _db = FirebaseFirestore.instance;
 
 class User {
   String id;
@@ -30,4 +32,8 @@ class User {
         phone_number: json['phone_number'],
         gender: json['gender'],
       );
+}
+
+Future<void> updateData(User user) async {
+  await _db.collection("Users").doc(user.id).update(user.toJson());
 }
